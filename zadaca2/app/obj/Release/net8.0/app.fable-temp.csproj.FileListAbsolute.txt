@@ -1,0 +1,7 @@
+/home/ajla/fp/app/bin/Release/net8.0/app.fable-temp.deps.json
+/home/ajla/fp/app/bin/Release/net8.0/app.fable-temp.runtimeconfig.json
+/home/ajla/fp/app/obj/Release/net8.0/app.fable-temp.GeneratedMSBuildEditorConfig.editorconfig
+/home/ajla/fp/app/obj/Release/net8.0/app.fable-temp.AssemblyInfoInputs.cache
+/home/ajla/fp/app/obj/Release/net8.0/app.fable-temp.AssemblyInfo.cs
+/home/ajla/fp/app/obj/Release/net8.0/app.fable-temp.genruntimeconfig.cache
+/home/ajla/fp/app/obj/Release/net8.0/app.fabl.53414F7B.Up2Date

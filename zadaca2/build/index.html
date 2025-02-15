@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Connection Game</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/Program.js"></script>
+    <style>
+      .main {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        background-color: #dbf1f2;
+        padding: 20px;
+      }
+      .row {
+        display: flex;
+        padding: 2px;
+        background-color: #dbf1f2;
+        min-height: 120px;
+      }
+
+      .children {
+        width: 120px;
+        height: 120px;
+        object-fit: cover;
+        margin: 5px;
+        border: 3px solid transparent;
+        border-radius: 10px;
+        cursor: pointer;
+      }
+
+      .children:hover {
+        transform: scale(1.1); /* slightly increase size of pics on hovering */
+      }
+      .children.selected {
+        width: 120px;
+        height: 120px;
+        object-fit: cover;
+        margin: 5px;
+        border: 3px solid red;
+        border-radius: 10px;
+      }
+      .card.shuffle {
+        width: 120px;
+        height: 120px;
+        object-fit: cover;
+        margin: 5px;
+        border: 3px solid transparent;
+        animation: fadein 0.7s ease-in-out;
+        border-radius: 10px;
+      }
+      .btn-container {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+      }
+      .btn {
+        margin: 10px;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        background-color: #f67280;
+        color: white;
+        border: none;
+        border-radius: 5px;
+      }
+      .btn:hover {
+        transform: scale(1.1); /*increase btn size on hovering*/
+        background-color: #c06c84;
+      }
+      .dots.notused {
+        width: 20px;
+        height: 20px;
+        margin: 5px;
+        background-color: #cbf078;
+        border-radius: 50%;
+        display: inline-block;
+        border: 2px solid #414141;
+      }
+      .msg {
+        font-family: sans-serif;
+        font-size: 20px;
+        font-weight: 510;
+        position: absolute;
+        top: 7%;
+      }
+      .popup {
+        z-index: 50;
+        position: absolute;
+        top: 11.5%;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+        background-color: #bdbdd7;
+        align-items: center;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        padding-left: 10px;
+        padding-right: 10px;
+        border-radius: 10%;
+        font-family: sans-serif;
+        animation: fadein 0.6s ease-in;
+      }
+      @keyframes fadein {
+        0% {
+          opacity: 0;
+        } /* popup krece od providnog stanja */
+        50% {
+          opacity: 0.5;
+        }
+        100% {
+          opacity: 1;
+        } /*zavrsi potpuno vidljiv*/
+      }
+      .dots.used {
+        width: 20px;
+        height: 20px;
+        margin: 5px;
+        background-color: #ff0000;
+        border-radius: 50%;
+        display: inline-block;
+        border: 2px solid #414141;
+        animation: fadein 0.3s ease-in;
+      }
+      /* annimation for shaking cards after async sleep is runned*/
+      @keyframes shake {
+        0% {
+          transform: translateX(0px);
+          scale: 1.05;
+        }
+        25% {
+          transform: translateX(-10px);
+          scale: 1.05;
+        }
+        50% {
+          transform: translateX(10px);
+          scale: 1.05;
+        }
+        75% {
+          transform: translateX(-10px);
+          scale: 1.025;
+        }
+        100% {
+          transform: translateX(0);
+          scale: 1;
+        }
+      }
+      .card.shake {
+        width: 120px;
+        height: 120px;
+        object-fit: cover;
+        margin: 5px;
+        border: 3px solid transparent;
+        animation: shake 0.7s ease-in-out;
+        border-radius: 10px;
+      }
+      .trys {
+        font-weight: 500;
+        font-family: sans-serif;
+      }
+      .done-cnt {
+        z-index: 50;
+        position: absolute;
+        top: 10%;
+        background-color: light blue;
+        font-weight: 550;
+        justify-content: center;
+        align-items: center;
+        animation: fadein 0.6s ease-in;
+        font-family: sans-serif;
+      }
+      .gameover-cnt {
+        z-index: 50;
+        position: absolute;
+        top: 10%;
+        background-color: light blue;
+        font-weight: 550;
+        justify-content: center;
+        align-items: center;
+        animation: fadein 0.6s ease-in;
+        font-family: sans-serif;
+      }
+
+      /* svi redovi u row sa ovom klasom imaju zajednicke sljedece osobine: */
+      .text-container {
+        min-height: 130px;
+        min-width: 530px;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        align-items: center;
+        border: 2px solid gray;
+        letter-spacing: 2px;
+        font-weight: 500;
+        font-family: sans-serif;
+        border-radius: 10px;
+        animation: appear 0.7s ease-in; /* animacija za text kada se prikaze da se malo uveca */
+      }
+
+      @keyframes appear {
+        0% {
+          scale: 0.9;
+        }
+        50% {
+          scale: 1.05;
+        }
+        100% {
+          scale: 1;
+        }
+      }
+
+      /* for each text row differnt background-color*/
+      .row:nth-child(1) .text-container {
+        background-color: #cbf078;
+      }
+
+      .row:nth-child(2) .text-container {
+        background-color: #f8f398;
+      }
+
+      .row:nth-child(3) .text-container {
+        background-color: #f1b963;
+      }
+      .row:nth-child(4) .text-container {
+        background-color: #e46161;
+      }
+    </style>
+  </body>
+</html>
